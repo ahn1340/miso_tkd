@@ -8,7 +8,10 @@
 MISO AI Challenge 2021은 '인공지능 학습용 데이터 구축 사업'을 통해 구축된 학습용 태권도 동작 데이터를 활용해 실제 구현 가능한 인공지능 학습 모델을 기획하고 개발하는 데이터톤 대회입니다. <p>
 본 대회는 NAVER CLOUD PLATFORM의 고성능 클라우드 인프라 상에서 운영되며 네이버의 클라우드 머신러닝 플랫폼인 <strong>[NSML](https://ai.nsml.navercorp.com/intro)</strong>(Naver Smart Machine Learning)과 함께 합니다. 
 <br>  
-  
+
+NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_KR/index.html
+ 
+ 
 ## 챌린지
 - 태권도 동작 데이터를 이용한 인공지능 모델 개발
    
