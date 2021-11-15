@@ -219,10 +219,10 @@ if __name__ == '__main__':
 
     if config.pause:
         nsml.paused(scope=locals())
-        print('-----------------------paused')
+        
     if config.mode =='train':
         # epoch times
-        epoch_times = 1
+        epoch_times = 10
         start_epoch = 0
 
         best_acc = 0
