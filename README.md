@@ -65,20 +65,20 @@
       <strong>참가 신청</strong><br>
     </td>
     <td style="text-align:center"> 2021년 10월 07일 ~ 11월 11일</td>
-    <td> 온라인 신청</td>
+    <td align=center> 온라인 신청</td>
   </tr>
     <tr>
         <td align=center>
       <strong>서류 심사</strong><br>
     </td>
-    <td style="text-align:center">2021년 11월 14일</td>
+    <td align=center>2021년 11월 14일</td>
         <td align=center> 합격팀 개별 통보
     </td>
    </tr>
      <tr>
           <td align=center><strong>개회식 및 설명회</strong><br>
     </td>
-    <td style="text-align:center">2021년 11월 15일</td>
+    <td align=center>2021년 11월 15일</td>
         <td align=center> 온라인
     </td>
    </tr>
