@@ -14,7 +14,7 @@ from torch.optim.lr_scheduler import StepLR
 from torchvision import transforms
 import torchvision.models as models
 import argparse
-from data_local_loader import test_loader, data_loader_with_split
+from data_local_loader import test_data_loader, data_loader_with_split
 from tqdm import tqdm
 
 
@@ -106,7 +106,7 @@ def train(epoch,model):
 
 def _infer(model, root_path):
 
-    test_loader = test_loader(
+    test_loader = test_data_loader(
         root=os.path.join(root_path, 'test_label'),
         phase='test',
         batch_size=64
