@@ -50,10 +50,7 @@
    </tr>
 
 </table>
-*동점자 발생 시에는 먼저 제출한 순서대로 리더보드에 표시되며, 리더보드 순위대로 시상
 
-
-<br>
 <br>
 
 ## 데이터톤 일정
@@ -99,8 +96,10 @@
 <br>
 
 ## 심사기준
-- [NSML Leader Board score](https://ai.nsml.navercorp.com/ranking)
-(NSML Leader Board의 score: 대회 종료 시점 기준으로 submit이 완료된 상태여야 함)
+- [NSML Leader Board score](https://ai.nsml.navercorp.com/ranking)<p>
+※ NSML Leader Board의 score: 대회 종료 시점 기준으로 submit이 완료된 상태여야 함)<p>
+※ 동점자 발생 시에는 먼저 제출한 순서대로 순위 선정
+
 - [데이터 설명 및 평가기준](https://github.com/DatathonInfo/MISOChallenge-taekwondo/blob/main/%5BMISOChallenge2021%5D%20Track%204.%20%ED%83%9C%EA%B6%8C%EB%8F%84%20%EB%8F%99%EC%9E%91%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%84%A4%EB%AA%85%EC%84%9C_.pdf.pdf)
 <br>
 
