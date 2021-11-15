@@ -9,8 +9,9 @@
 본 대회는 NAVER CLOUD PLATFORM의 고성능 클라우드 인프라 상에서 운영되며 네이버의 클라우드 머신러닝 플랫폼인 <strong>[NSML](https://ai.nsml.navercorp.com/intro)</strong>(Naver Smart Machine Learning)과 함께 합니다. 
 <br>  
 
-NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_KR/index.html
+- [NSML 기본 사용 가이드](https://n-clair.github.io/ai-docs/_build/html/ko_KR/index.html)
  
+<br>
  
 ## 챌린지
 - 태권도 동작 데이터를 이용한 인공지능 모델 개발
@@ -49,6 +50,7 @@ NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_K
 </table>
 *동점자 발생 시에는 먼저 제출한 순서대로 리더보드에 표시되며, 리더보드 순위대로 시상
 
+<br>
    
 ## 데이터톤 일정
 <table class="tbl_schedule">
@@ -90,12 +92,14 @@ NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_K
 </table>
 ※ 참가자에게는 일정 및 진행사항에 대해 개별 안내드립니다.<br>
 
+<br>
 
 ## 심사기준
 - NSML Leader Board score
 - NSML Leader Board의 score :대회 종료 시점 기준으로 submit이 완료된 상태여야 함
+- [데이터 설명 및 평가기준](https://github.com/DatathonInfo/MISOChallenge-taekwondo/blob/main/%5BMISOChallenge2021%5D%20Track%204.%20%ED%83%9C%EA%B6%8C%EB%8F%84%20%EB%8F%99%EC%9E%91%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%84%A4%EB%AA%85%EC%84%9C_.pdf)
+<br>
 
-
-## 추진
+## 주최 및 주관
 - 주최: 과학기술정보통신부, 한국지능정보사회진흥원
 - 주관: (주)에어패스, (주)컴아트시스템, (주)가치랩스, (주)AI 태권도, (주)울프슨랩, (주)미소정보기술
