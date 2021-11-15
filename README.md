@@ -68,7 +68,7 @@ NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_K
         <td align=center>
       <strong>서류 심사</strong><br>
     </td>
-    <td style="text-align:center">2021년 11월 05일</td>
+    <td style="text-align:center">2021년 11월 14일</td>
         <td align=center> 합격팀 개별 통보
     </td>
    </tr>
