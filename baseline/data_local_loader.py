@@ -81,7 +81,7 @@ class TestDataset(data.Dataset):
 
         return img_id, image
 
-def test_loader(root, phase='train', batch_size=64):
+def test_data_loader(root, phase='train', batch_size=64):
     if phase == 'train':
         is_train = True
     elif phase == 'test':
