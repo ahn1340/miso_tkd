@@ -73,7 +73,6 @@ nsml dataset board teamname
 
 #### Evaluation Metric:
 
-$$
-Accuracy = \frac{TP+TN}{TP+TN+FP+FN}
-$$
+![image](https://user-images.githubusercontent.com/59240255/141822773-800febee-9b1c-4d2f-938b-f514871054f0.png)
+
 
