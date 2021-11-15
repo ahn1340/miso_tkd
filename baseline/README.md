@@ -7,24 +7,24 @@
 #### How to run
 
 ```
-nsml run -d taekwondo
+nsml run -d TAEKWONDO
 ```
 
 #### How to check session logs
 ```
-nsml logs -f [SESSION_NAME] # e.g., nsml logs -f teamname/taekwondo/1
+nsml logs -f [SESSION_NAME] # e.g., nsml logs -f teamname/TAEKWONDO/1
 ```
 
 #### How to list checkpoints saved
 You can search model checkpoints by using the following command:
 ```
-nsml model ls teamname/taekwondo/1
+nsml model ls teamname/TAEKWONDO/1
 ```
 
 #### How to submit
 The following command is an example of running the evaluation code using the model checkpoint at 10th epoch.
 ```
-nsml submit  teamname/taekwondo/1 1
+nsml submit  teamname/TAEKWONDO/1 1
 ```
 
 #### How to check leaderboard
