@@ -1,11 +1,11 @@
 ![2021태권도 동작 데이터를 이용한 인공지능 모델 개발 챌린지(포스터)](https://user-images.githubusercontent.com/92664643/139574187-ead7711f-2e5c-42d5-af66-3b4b6abfe72c.jpg)
 
 
-# 태권도 동작 데이터를 이용한 인공지능 모델 개발 챌린지 2021 (MISO AI Challenge-Track 4)
+# 2021 미소 인공지능 모델 개발 챌린지 - TRACK 04. 태권도 동작 데이터
 인공지능 개발에 도전해보세요! <p>
 
  
-MISO AI Challenge 2021은 '인공지능 학습용 데이터 구축 사업'을 통해 구축된 학습용 태권도 동작 데이터를 활용해 실제 구현 가능한 인공지능 학습 모델을 기획하고 개발하는 데이터톤 대회입니다. <p>
+2021 미소 인공지능 모델 개발 챌린지(MISO AI Challenge 2021)는 '인공지능 학습용 데이터 구축 사업'을 통해 구축된 학습용 태권도 동작 데이터를 활용해 실제 구현 가능한 인공지능 학습 모델을 기획하고 개발하는 데이터톤 대회입니다. <p>
 본 대회는 NAVER CLOUD PLATFORM의 고성능 클라우드 인프라 상에서 운영되며 네이버의 클라우드 머신러닝 플랫폼인 <strong>[NSML](https://ai.nsml.navercorp.com/intro)</strong>(Naver Smart Machine Learning)과 함께 합니다. 
 <br>  
 
@@ -54,7 +54,7 @@ NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_K
 <table class="tbl_schedule">
   <tr>
     <th style="text-align:left;width:50%">행사내용</th>
-    <th style="text-align:center;width:15%">일정</th>
+    <th style="text-align:center;width:15%">일 정</th>
         <th style="text-align:left;width:35%">장소/방식</th>
   </tr>
   <tr>
@@ -62,11 +62,11 @@ NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_K
       <strong>참가 신청</strong><br>
     </td>
     <td style="text-align:center"> 2021년 10월 07일 ~ 11월 11일</td>
-    <td> 온라인(https://misochallenge.com) </td>
+    <td> 온라인 신청</td>
   </tr>
     <tr>
         <td align=center>
-      <strong>서류심사</strong><br>
+      <strong>서류 심사</strong><br>
     </td>
     <td style="text-align:center">2021년 11월 05일</td>
         <td align=center> 합격팀 개별 통보
@@ -81,9 +81,9 @@ NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_K
    </tr>
      <tr>
     <td align=center>
-      <strong>본선</strong><br>
+      <strong>본선 대회</strong><br>
     </td>
-    <td style="text-align:center">2021년 11월 16일 ~ 11월 19</td>
+    <td style="text-align:center">2021년 11월 16일 ~ 11월 19일</td>
  <td align=center> 온라인
     </td>
    </tr>
@@ -98,4 +98,4 @@ NSML 기본 사용 가이드: https://n-clair.github.io/ai-docs/_build/html/ko_K
 
 ## 추진
 - 주최: 과학기술정보통신부, 한국지능정보사회진흥원
-- 주관: (주)미소정보기술, 가톨릭대학교 사한협력단, (주)에어페스, (주)울프슨랩, (주)에이아이태권도, (주)가치랩스, (주)컴아트시스탬
+- 주관: (주)에어패스, (주)컴아트시스템, (주)가치랩스, (주)AI 태권도, (주)울프슨랩, (주)미소정보기술
