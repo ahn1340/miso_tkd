@@ -96,7 +96,7 @@
 <br>
 
 ## 심사기준
-- [NSML Leader Board score](https://ai.nsml.navercorp.com/ranking)<p>
+- [NSML Leader Board score](https://ai.nsml.navercorp.com/rankings/2)<p>
 ※ NSML Leader Board의 score: 대회 종료 시점 기준으로 submit이 완료된 상태여야 함)<p>
 ※ 동점자 발생 시에는 먼저 제출한 순서대로 순위 선정
 
