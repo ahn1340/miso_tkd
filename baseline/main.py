@@ -1,11 +1,13 @@
 import os
 import math
 import datetime
+import time
 import copy
 import numpy as np
 import time
 
 import torch
+#import torchsummary
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim import Adam
@@ -16,6 +18,9 @@ import torchvision.models as models
 import argparse
 from data_local_loader import test_data_loader, data_loader_with_split
 from tqdm import tqdm
+
+# custom modules
+from model import r2plus1d_18
 
 
 
@@ -65,6 +70,15 @@ def validate(epoch, model):
         best_acc = acc
         print('Best Acc : %.3f' % best_acc)
 
+    if IS_ON_NSML:
+        nsml.report(
+            summary=True,
+            step=epoch,
+            epoch_total=epoch_times,
+            val_loss=valid_loss / total,
+            val_acc=correct / total
+        )
+
 
 def train(epoch,model):
     # train mode
@@ -74,9 +88,10 @@ def train(epoch,model):
     total = 0
 
     for batch_i, sample in enumerate(tr_loader):
+        start_time = time.time()
         optimizer.zero_grad()
 
-        inputs, targets = sample[1], sample[2]
+        inputs, targets = sample[1], sample[2]  # image shape: 3 * 224 * 224
         inputs = inputs.to(device)
         targets = targets.to(device)
 
@@ -91,14 +106,24 @@ def train(epoch,model):
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
 
+        end_time = time.time()
+        duration = end_time - start_time
+
+        print('Epoch %d Batch %d Loss=%.3f (%.3f), Acc=%.3f, Time = %.3f' % (epoch,
+                                                                                    batch_i,
+                                                                                    loss.item() / targets.size(0),
+                                                                                    train_loss / total,
+                                                                                    correct / total,
+                                                                                    duration))
+
 
     if IS_ON_NSML:
         nsml.report(
             summary=True,
             step=epoch,
             epoch_total=epoch_times,
-            loss=train_loss / total,
-            acc= correct / total
+            train_loss=train_loss / total,
+            train_acc=correct / total,
         )
 
         nsml.save(str(epoch + 1))
@@ -154,6 +179,8 @@ def bind_model(model, optimizer=None):
 
     nsml.bind(save=save, load=load, infer=infer)  # 'nsml.bind' function must be called at the end.
 
+
+
 if __name__ == '__main__':
     global device
     global val_loader
@@ -172,7 +199,7 @@ if __name__ == '__main__':
     args.add_argument("--num_epochs", type=int, default=10)
     args.add_argument("--print_iter", type=int, default=10)
     args.add_argument("--eval_split", type=str, default='val')
-    args.add_argument("--batch_size", type=int, default=64)
+    args.add_argument("--batch_size", type=int, default=32)
 
     # reserved for nsml
     args.add_argument("--mode", type=str, default="train")
@@ -196,24 +223,25 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # model
-    vgg16_ft = models.vgg16_bn(pretrained=True)
+    vgg16_ft = models.vgg16_bn(pretrained=False)
     vgg16_ft.features[0] = nn.Conv2d(9,64,kernel_size=(3,3),stride=1,padding=(1,1))
     num_ftrs = vgg16_ft.classifier[6].in_features
     vgg16_ft.classifier[6] = nn.Linear(num_ftrs,10)
     vgg16_ft = vgg16_ft.to(device)
 
-
-
-
-
+    # custom model
+    resnet_2p1d = r2plus1d_18()
 
     # optimizer
-    optimizer = optim.SGD(vgg16_ft.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
+    optimizer = optim.SGD(resnet_2p1d.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
 
     # criterion
     criterion = nn.CrossEntropyLoss()
 
-    model = vgg16_ft
+    #model = vgg16_ft
+    model = resnet_2p1d
+    model = model.to(device)
+
     if IS_ON_NSML:
         bind_model(model, optimizer)
 
@@ -222,7 +250,7 @@ if __name__ == '__main__':
         
     if config.mode =='train':
         # epoch times
-        epoch_times = 10
+        epoch_times = 100
         start_epoch = 0
 
         best_acc = 0

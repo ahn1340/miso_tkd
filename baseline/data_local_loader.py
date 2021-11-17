@@ -48,7 +48,7 @@ class CustomDataset(data.Dataset):
             image_S1 = self.transform(image_S1)
             image_M1 = self.transform(image_M1)
             image_E1 = self.transform(image_E1)
-            image = torch.cat((image_S1, image_M1, image_E1))
+            image = torch.stack((image_S1, image_M1, image_E1), dim=1)
         label = int(label)
 
 
@@ -113,9 +113,11 @@ def data_loader_with_split(root, train_split=0.9, batch_size=64, val_label_file=
     train_set, valid_set = data.random_split(dataset, [split_size, len(dataset) - split_size])
     tr_loader = data.DataLoader(dataset=train_set,
                                 batch_size=batch_size,
+                                num_workers=8,
                                 shuffle=True)
     val_loader = data.DataLoader(dataset=valid_set,
                                  batch_size=batch_size,
+                                 num_workers=8,
                                  shuffle=False)
 
 
