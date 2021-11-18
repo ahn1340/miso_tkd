@@ -78,7 +78,7 @@ class BasicBlock(nn.Module):
         downsample: Optional[nn.Module] = None,
     ) -> None:
         midplanes = (inplanes * planes * 3 * 3 * 3) // (inplanes * 3 * 3 + 3 * planes)
-        midplanes = int(midplanes * 0.5)
+        midplanes = int(midplanes * 0.67)
 
         super().__init__()
         self.conv1 = nn.Sequential(

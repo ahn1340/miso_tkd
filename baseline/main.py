@@ -10,6 +10,7 @@ import torch
 #import torchsummary
 import torch.nn as nn
 import torch.optim as optim
+from torch.nn.utils import clip_grad_norm_
 from torch.optim import Adam
 from torch.optim.lr_scheduler import StepLR
 
@@ -80,12 +81,14 @@ def validate(epoch, model):
         )
 
 
-def train(epoch,model):
+def train(epoch, model, scheduler):
+    print("Start Epoch {}".format(epoch))
     # train mode
     model.train()
     train_loss = 0
     correct = 0
     total = 0
+    clip_gradient = 40
 
     for batch_i, sample in enumerate(tr_loader):
         start_time = time.time()
@@ -93,11 +96,18 @@ def train(epoch,model):
 
         inputs, targets = sample[1], sample[2]  # image shape: 3 * 224 * 224
         inputs = inputs.to(device)
+        print(inputs.size())
         targets = targets.to(device)
 
         outputs = model(inputs)
         loss = criterion(outputs, targets)
         loss.backward()
+
+        if clip_gradient is not None:
+            total_norm = clip_grad_norm_(model.parameters(), clip_gradient)
+            if total_norm > clip_gradient:
+                print("clipping gradient: {} with coef {}".format(
+                    total_norm, clip_gradient / total_norm))
 
         optimizer.step()
 
@@ -124,9 +134,12 @@ def train(epoch,model):
             epoch_total=epoch_times,
             train_loss=train_loss / total,
             train_acc=correct / total,
+            lr=scheduler.get_last_lr()
         )
 
         nsml.save(str(epoch + 1))
+
+    scheduler.step()
     print('Training   Epoch=%d, Loss=%.3f, Acc=%.3f' % (epoch, train_loss / total, correct / total))
 
 def _infer(model, root_path):
@@ -218,27 +231,84 @@ if __name__ == '__main__':
     batch_size = config.batch_size
     mode = config.mode
 
-
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # model
-    vgg16_ft = models.vgg16_bn(pretrained=False)
-    vgg16_ft.features[0] = nn.Conv2d(9,64,kernel_size=(3,3),stride=1,padding=(1,1))
-    num_ftrs = vgg16_ft.classifier[6].in_features
-    vgg16_ft.classifier[6] = nn.Linear(num_ftrs,10)
-    vgg16_ft = vgg16_ft.to(device)
+    ################ models #################
+    # Densenet161
+    densenet161_2d = models.densenet161(pretrained=True)
+    densenet161_2d.features.conv0 = nn.Conv2d(9, 96,
+                                              kernel_size=(7, 7),
+                                              stride=(2, 2),
+                                              padding=(3, 3),
+                                              bias=False)
+    densenet161_2d.classifier = nn.Sequential(nn.Linear(in_features=2208, out_features=256),
+                                              nn.ReLU(),
+                                              nn.Dropout(p=0.2),
+                                              nn.Linear(256, 10))
 
-    # custom model
-    resnet_2p1d = r2plus1d_18()
+    # Resnet152
+    resnet_2d = models.resnet152(pretrained=True)
+    resnet_2d.conv1 = nn.Conv2d(9, 64,
+                                kernel_size=(7, 7),
+                                stride=(2, 2),
+                                padding=(3, 3),
+                                bias=False)
+    resnet_2d.fc = nn.Sequential(nn.Linear(in_features=2048, out_features=256),
+                                 nn.ReLU(),
+                                 nn.Dropout(p=0.2,),
+                                 nn.Linear(256, 10))
+
+    # EfficientNet_b0
+    efficient_net = models.efficientnet_b0(pretrained=True)
+    efficient_net.features[0][0] = nn.Conv2d(9, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+    efficient_net.classifier[1] = nn.Sequential(nn.Linear(1280, 256),
+                                                nn.Dropout(p=0.2, inplace=True),
+                                                nn.Linear(256, 10))
+
+    # (2+1)D resnet
+    resnet_2p1d = models.video.r2plus1d_18(pretrained=False)
+    resnet_2p1d.layer3[0].relu = nn.Sequential(nn.ReLU(inplace=True),
+                                               nn.Flatten(start_dim=1, end_dim=2))
+
+    resnet_2p1d.layer3[1].conv1 = nn.Sequential(nn.Conv2d(256, 256, kernel_size=3, padding=1, stride=1, bias=False),
+                                                nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
+                                                nn.ReLU(inplace=True))
+    resnet_2p1d.layer3[1].conv2 = nn.Sequential(nn.Conv2d(256, 256, kernel_size=3, padding=1, stride=1, bias=False),
+                                                nn.BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
+                                                nn.ReLU(inplace=True))
+
+    resnet_2p1d.layer4[0].conv1 = nn.Sequential(nn.Conv2d(256, 512, kernel_size=3, padding=1, stride=2, bias=False),
+                                                nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
+                                                nn.ReLU(inplace=True))
+    resnet_2p1d.layer4[0].conv2 = nn.Sequential(nn.Conv2d(512, 512, kernel_size=3, padding=1, stride=1, bias=False),
+                                                nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
+                                                nn.ReLU(inplace=True))
+    resnet_2p1d.layer4[0].downsample = nn.Sequential(nn.Conv2d(256, 512, kernel_size=3, padding=1, stride=2, bias=False),
+                                                nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
+                                                )
+
+    resnet_2p1d.layer4[1].conv1 = nn.Sequential(nn.Conv2d(512, 512, kernel_size=3, padding=1, stride=1, bias=False),
+                                                nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
+                                                nn.ReLU(inplace=True))
+    resnet_2p1d.layer4[1].conv2 = nn.Sequential(nn.Conv2d(512, 512, kernel_size=3, padding=1, stride=1, bias=False),
+                                                nn.BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
+                                                nn.ReLU(inplace=True))
+    resnet_2p1d.avgpool = nn.AdaptiveAvgPool2d(1)
+    resnet_2p1d.fc = nn.Linear(512, 10)
+
+    # conv - bn - relu - conv - bn - relu
+    #print(resnet_2p1d)
+    #torchsummary.summary(resnet_2p1d, (3, 3, 224, 224))
+    ################ models #################
+    #resnet_2p1d = r2plus1d_18()
 
     # optimizer
-    optimizer = optim.SGD(resnet_2p1d.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
+    optimizer = optim.SGD(resnet_2p1d.parameters(), lr=0.01, momentum=0.9, weight_decay=2e-3)
 
     # criterion
     criterion = nn.CrossEntropyLoss()
 
-    #model = vgg16_ft
+    #model = densenet161_2d
     model = resnet_2p1d
     model = model.to(device)
 
@@ -250,17 +320,20 @@ if __name__ == '__main__':
         
     if config.mode =='train':
         # epoch times
-        epoch_times = 100
+        epoch_times = 1
         start_epoch = 0
+        scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, epoch_times, eta_min=1e-5)
 
         best_acc = 0
 
         tr_loader, val_loader, val_label = data_loader_with_split(
                 root=TRAIN_DATASET_PATH,
                 train_split=train_split,
-                batch_size = batch_size
+                batch_size = batch_size,
+                data_mode='2d'
             )
 
+
         for epoch in range(start_epoch, start_epoch + epoch_times):
-            train(epoch,model)
+            train(epoch,model,scheduler)
             validate(epoch, model)

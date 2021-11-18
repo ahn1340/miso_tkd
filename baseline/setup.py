@@ -6,9 +6,11 @@ setup(
     version='1.0',
     install_requires=[
         # 'torch==1.7.1+cu110',
-        # 'torchvision==0.8.2+cu110',
+        'torchvision==0.11.1',
         'tqdm',
         'pandas',
         'pillow',
+        'albumentations',
+        'opencv-python',
     ]
 )
